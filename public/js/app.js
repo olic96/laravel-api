@@ -49591,17 +49591,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/sass/front.scss":
-/*!***********************************!*\
-  !*** ./resources/sass/front.scss ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
 /***/ 0:
 /*!*****************************************************************************************!*\
   !*** multi ./resources/js/app.js ./resources/sass/app.scss ./resources/sass/front.scss ***!
@@ -49611,7 +49600,7 @@ __webpack_require__.r(__webpack_exports__);
 
 __webpack_require__(/*! /Users/olic/Boolean/laravel-api/resources/js/app.js */"./resources/js/app.js");
 __webpack_require__(/*! /Users/olic/Boolean/laravel-api/resources/sass/app.scss */"./resources/sass/app.scss");
-module.exports = __webpack_require__(/*! /Users/olic/Boolean/laravel-api/resources/sass/front.scss */"./resources/sass/front.scss");
+!(function webpackMissingModule() { var e = new Error("Cannot find module '/Users/olic/Boolean/laravel-api/resources/sass/front.scss'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
 
 
 /***/ })
