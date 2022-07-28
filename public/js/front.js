@@ -2401,9 +2401,9 @@ var render = function render() {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _c("div", {
+  return _vm.post ? _c("div", {
     staticClass: "container"
-  }, [_c("h1", [_vm._v(_vm._s(_vm.post.title))]), _vm._v(" "), _c("p", [_vm._v(_vm._s(_vm.post.content))]), _vm._v(" "), _c("h3", [_vm._v("Autore di questo post: " + _vm._s(_vm.post.name))]), _vm._v(" "), _c("div", {
+  }, [_c("h1", [_vm._v(_vm._s(_vm.post.title))]), _vm._v(" "), _c("p", [_vm._v(_vm._s(_vm.post.content))]), _vm._v(" "), _c("h3", [_vm._v("Autore di questo post: Francesco")]), _vm._v(" "), _c("div", {
     staticClass: "mt-5"
   }, [_c("router-link", {
     attrs: {
@@ -2411,7 +2411,7 @@ var render = function render() {
         name: "home"
       }
     }
-  }, [_vm._v("Home Page")])], 1)]);
+  }, [_vm._v("Home Page")])], 1)]) : _vm._e();
 };
 
 var staticRenderFns = [];
