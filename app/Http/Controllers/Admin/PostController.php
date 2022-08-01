@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 use App\Category;
 use App\Tag;
 use App\Post; 
+
 
 
 class PostController extends Controller
@@ -52,6 +54,7 @@ class PostController extends Controller
             'published' => 'sometimes|accepted',
             'category_id' => 'nullable|exists:categories,id',
             'tags' => 'nullable|exists:tags,id',
+            'image' => 'nullable|image|max:2000'
         ]);
         // prendo i dati dalla request e creo il post
         $data = $request->all();
@@ -61,12 +64,19 @@ class PostController extends Controller
         $newPost->slug = $this->getSlug($data['title']);
 
         $newPost->published = isset($data['published']); // true o false
+
+        // aggiungo l'immagine se è presente
+        if(isset($data['image'])) {
+            $newPost->image = Storage::put('uploads', $data['image']);
+        }
+
         $newPost->save();
         
         // se ci sono dei tags associati, li associo al post appena creato
         if(isset($data['tags'])) {
             $newPost->tags()->sync($data['tags']);
         }
+        
         // redirect alla pagina del post appena creato
         return redirect()->route('admin.posts.show', $newPost->id);
     }
@@ -121,6 +131,14 @@ class PostController extends Controller
 
         $post->published = isset($data['published']); // true o false
 
+        if(isset($data['image'])) {
+            if($post->image) {
+                Storage::delete($post->image);
+            }
+
+            $post->image = Storage::put('uploads', $data['image']);
+        }
+        
         $post->save();
         // redirect
         return redirect()->route('admin.posts.show', $post->id);
@@ -134,6 +152,10 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        if($post->image) {
+            Storage::delete($post->image);
+        }
+
         $post->delete();
 
         return redirect()->route('admin.posts.index');

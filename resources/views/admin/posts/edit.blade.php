@@ -7,7 +7,7 @@
                 <h1>Modifica: {{$post->title}}</h1>
             </div>
             <div class="card-body">
-                <form action="{{route('admin.posts.update', $post->id)}}" method="POST">
+                <form action="{{route('admin.posts.update', $post->id)}}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="form-group">
@@ -25,6 +25,18 @@
                         @enderror
                     </div>
                     <div class="form-group">
+                        <label for="image">Immagine</label>
+                        @if($post->image)
+                        <div>
+                            <img width="100" src="{{asset("storage/{$post->image}")}}" alt="">
+                        </div>
+                        @endif
+                        <input type="file" class="form-control-file @error('image') is-invalid @enderror" id="image" name="image" value="{{old('image')}}">
+                        @error('image')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
                         <label for="category">Categoria</label>
                         <select class="form-control @error('category_id') is-invalid @enderror" id="category" name="category_id">
                             <option value="">Seleziona Categoria</option>
@@ -35,7 +47,19 @@
                         @error('category_id')
                             <div class="alert alert-danger">{{ $message }}</div>
                         @enderror
-                    </div> 
+                    </div>
+                    <div class="form-group">
+                        <p>Tags</p>
+                        @foreach ($tags as $tag)
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="{{$tag->slug}}" value="{{$tag->id}}" name="tags[]" {{in_array($tag->id, old('tags', $postTags)) ? 'checked' : ''}}>
+                            <label class="form-check-label" for="{{$tag->slug}}">{{$tag->name}}</label>
+                        </div>
+                        @endforeach
+                        @error('tags')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
                     <div class="form-group form-check">
                         <input type="checkbox" class="form-check-input @error('published') is-invalid @enderror" id="published" name="published" {{old('published', $post->published) ? 'checked' : ''}}>
                         <label class="form-check-label" for="published">Pubblica</label>
