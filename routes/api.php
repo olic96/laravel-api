@@ -21,3 +21,5 @@ Route::get('posts/{slug}', 'Api\PostController@show');
 Route::get('categories', 'Api\CategoryController@index');
 // api/categories/{slug}
 Route::get('categories/{slug}', 'Api\CategoryController@show');
+// POST: api/comments/{post_id} oppure api/comments
+Route::post('comments/{post_id}', 'Api\CommentController@store');
