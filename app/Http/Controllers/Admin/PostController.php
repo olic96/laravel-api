@@ -101,8 +101,14 @@ class PostController extends Controller
     public function edit(Post $post)
     {   
         $categories = Category::all(); 
+        $tags = Tag::all();
 
-        return view('admin.posts.edit', compact('post', 'categories'));
+        $postTags = $post->tags->map(function ($tag) {
+            return $tag->id;
+        })->toArray();
+        // [], [1,2]
+
+        return view('admin.posts.edit', compact('post', 'categories', 'tags', 'postTags'));
     }
 
     /**
@@ -119,7 +125,9 @@ class PostController extends Controller
             'title' => 'required|string|max:255',
             'content' => 'required|string|max:65535',
             'published' => 'sometimes|accepted',
-            'category_id' => 'nullable|exists:categories,id'
+            'category_id' => 'nullable|exists:categories,id',
+            'tags' => 'nullable|exists:tags,id',
+            'image' => 'nullable|image|max:2000'
         ]);
         // aggiornamento
         $data = $request->all();
@@ -140,6 +148,10 @@ class PostController extends Controller
         }
         
         $post->save();
+
+        $tags = isset($data['tags']) ? $data['tags'] : [];
+
+        $post->tags()->sync($tags);
         // redirect
         return redirect()->route('admin.posts.show', $post->id);
     }
